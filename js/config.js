@@ -61,7 +61,7 @@ window.AA_BLOG.firebase = {
 };
 
 /* ⚠️ فارغ = لا يُحمَّل أي تتبع. معلق عليك: ملكية G-P8VBBK21WK مقابل G-0XEPCGX0EL */
-window.AA_BLOG.analytics = { ga4: '' };
+window.AA_BLOG.analytics = { ga4: 'G-0XEPCGX0EL' };
 
 window.AA_BLOG.i18n = {
   ar: {
