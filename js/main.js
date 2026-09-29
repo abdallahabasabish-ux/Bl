@@ -1,13 +1,9 @@
 /* ============================================================
-   Blog — main.js · chrome (header/mobile/footer), language from
-   path (/en/* → en), search overlay, reveal animations.
-   v2 — integrated:
-   · footer legal links rendered from BLOG_LEGAL (real pages)
-   · archive link added to footer navigation
-   · esc() hardening on footer email/brand
-   Language is set at IIFE execution (before DOMContentLoaded),
-   so self-booting renderers (legal/archive/article) read the
-   correct lang regardless of listener order.
+   Blog — main.js v3
+   · NEW: AB.toast / AB.openDialog / AB.closeDialog primitives
+     (كانت مُستهلَكة في 4 ملفات دون تعريف — انهيار مؤجل)
+   · footer legal links من i18n (تعمل على كل الصفحات)
+   · boot: AB.comments?.() — حارس آمن قبل وجود comments.js
    ============================================================ */
 "use strict";
 const $  = (s, r = document) => r.querySelector(s);
@@ -23,6 +19,50 @@ const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.documentElement.lang = AB.lang;
   document.documentElement.dir  = AB.lang === "ar" ? "rtl" : "ltr";
 
+  /* ---- UI primitives (تسأل عن حاوياتها وقت الاستدعاء) -------- */
+  let toastTimer = null, dialogReturnFocus = null;
+
+  window.AB.toast = msg => {
+    const el = $("#toast"); if (!el) return;
+    el.textContent = msg; el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 2800);
+  };
+  window.AB.openDialog = node => {
+    const root = $("#dialogRoot"); if (!root) return;
+    root.innerHTML = ""; root.appendChild(node);
+    root.classList.add("open");
+    document.body.classList.add("no-scroll");
+    dialogReturnFocus = document.activeElement;
+    const first = [...node.querySelectorAll("input:not([type=hidden]), select, textarea, button, [href]")]
+      .find(el => !el.disabled && el.offsetParent !== null);
+    (first || node).focus?.();
+  };
+  window.AB.closeDialog = () => {
+    const root = $("#dialogRoot");
+    if (!root || !root.classList.contains("open")) return;
+    root.classList.remove("open"); root.innerHTML = "";
+    document.body.classList.remove("no-scroll");
+    if (dialogReturnFocus) { try { dialogReturnFocus.focus(); } catch (e) {} dialogReturnFocus = null; }
+  };
+  /* إغلاق بالنقر على الخلفية أو زر [data-close] */
+  document.addEventListener("click", e => {
+    const root = $("#dialogRoot");
+    if (!root || !root.classList.contains("open")) return;
+    if (e.target === root || e.target.closest("[data-close]")) window.AB.closeDialog();
+  });
+  /* حصر التركيز داخل النافذة المفتوحة */
+  document.addEventListener("keydown", e => {
+    const root = $("#dialogRoot");
+    if (e.key !== "Tab" || !root || !root.classList.contains("open")) return;
+    const els = [...root.querySelectorAll("button,[href],input:not([type=hidden]),select,textarea")]
+      .filter(el => !el.disabled && el.offsetParent !== null);
+    if (!els.length) return;
+    const first = els[0], last = els[els.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+  });
+
   const NAV = [["/","nav.home"],["/articles/","nav.articles"],["/articles/","nav.categories","#categories"],
                ["/services/","nav.services"],["/works/","nav.works"],["/about/","nav.about"],["/contact/","nav.contact"]];
 
@@ -31,7 +71,6 @@ const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
     <path d="M9.5 23 16 8.5 22.5 23h-3.6L16 16.4 13.1 23z" fill="#0a0a0b"/></svg>
     <span class="brand-word">ABDALLAH&nbsp;ABAS</span><span class="brand-dot"></span></a>`;
 
-  /* تبديل اللغة بين النسختين الفعليتين — وحتى بين المقال وترجمته */
   const langSwap = (() => {
     if (isEN) return () => location.pathname.replace(/^\/en/, "") + location.search;
     const slug = new URLSearchParams(location.search).get("u");
@@ -106,10 +145,8 @@ const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
     <div class="container footer-bar">
       <p>© <span id="year" class="num"></span> ${esc(cfg.brandName)}. ${T("misc.rights")}</p>
       <ul class="footer-legal">
-        ${["privacy","terms","disclosure","disclaimer"].map(k=>{
-          const d = (window.BLOG_LEGAL || {})[k];
-          return d ? `<li><a href="${P("/"+k+"/")}">${esc(AB.L(d.title))}</a></li>` : "";
-        }).join("")}
+        ${["privacy","terms","disclosure","disclaimer"].map(k =>
+          `<li><a href="${P("/"+k+"/")}">${T("legal."+k)}</a></li>`).join("")}
       </ul>
     </div></footer>`);
     $("#year").textContent = String(new Date().getFullYear());
@@ -167,9 +204,9 @@ const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.addEventListener("DOMContentLoaded", () => {
     chrome(); footer();
     const page = document.body.dataset.page;
-    if (page === "article") AB.articlePage();
+    if (page === "article") AB.articlePage?.();
     else if (AB.pages[page]) AB.pages[page]();
-    AB.comments();
+    AB.comments?.();
     if (!REDUCED && "IntersectionObserver" in window) {
       const io = new IntersectionObserver(es => es.forEach(en => {
         if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
