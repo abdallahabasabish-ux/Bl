@@ -38,14 +38,23 @@ window.AA_BLOG.services = [
 
 /* مفاتيح تفعيل تدريجية — الروابط لا تُعرض لصفحات غير موجودة بعد (صفر روابط مكسورة) */
 window.AA_BLOG.features = {
-  innerPages: false,  // M3: about/services/portfolio/categories/contact
-  comments:   false,  // M4
-  search:     false,  // M5
-  legalPages: false,  // M3
-  ads:        false,  // AdSense — بنية جاهزة، بلا كود وهمي
+  /* وجود الصفحات — يتحكم في روابط الفوتر */
+  pages: {
+    blog: true,        // M2 ✓
+    categories: false, // M3
+    services: false,   // M3
+    portfolio: false,  // M3
+    about: false,      // M3
+    contact: false,    // M3
+  },
+  legalPages: false, // M3 — سياسة الخصوصية/الشروط/إخلاء المسؤولية
+  comments:   false, // M4
+  search:     false, // M5
+  ads:        false, // AdSense — بنية جاهزة، بلا كود وهمي
 };
 
-/* Firebase — نفس المشروع الحالي (الخيار أ). تحقق من senderId/storageBucket مرة واحدة */
+/* Firebase — نفس المشروع الحالي (الخيار أ).
+   messagingSenderId وstorageBucket من وثيقة التسليم — تحقق منهما مرة واحدة من Console */
 window.AA_BLOG.firebase = {
   apiKey: 'AIzaSyDg-oSbA_UdlzMS8HZGE0pHtr_zWg5rrXY',
   authDomain: 'abdallahsst.firebaseapp.com',
@@ -60,8 +69,9 @@ window.AA_BLOG.firebase = {
   },
 };
 
-/* ⚠️ فارغ = لا يُحمَّل أي تتبع. معلق عليك: ملكية G-P8VBBK21WK مقابل G-0XEPCGX0EL */
-window.AA_BLOG.analytics = { ga4: 'G-0XEPCGX0EL' };
+/* ⚠️ فارغ = لا يُحمَّل أي تتبع.
+   معلق عليك: ملكية G-P8VBBK21WK (Firebase) مقابل G-0XEPCGX0EL (gtag) — أو خاصية جديدة للمدونة */
+window.AA_BLOG.analytics = { ga4: '' };
 
 window.AA_BLOG.i18n = {
   ar: {
