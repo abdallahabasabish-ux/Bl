@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- canonical/hreflang/og يضاف ديناميكيًا من js/article-page.js لكل مقال -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/js/theme.js"></script>
+<!-- canonical / hreflang / og:title + og:description + og:url تُبنى ديناميكيًا لكل مقال من js/article-page.js -->
 <title>مقال — عبدالله عباس</title>
 <meta name="description" content="مقال من مدونة عبدالله عباس.">
-<meta name="robots" content="max-image-preview:large">
-<meta name="theme-color" content="#0a0a0b">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FF6600'/%3E%3Cpath d='M9.5 23 16 8.5 22.5 23h-3.6L16 16.4 13.1 23z' fill='%230a0a0b'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+<link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+<meta property="og:site_name" content="Abdallah Abas — Blog">
+<meta property="og:image" content="https://blog.abdallahabas.com/public/images/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/main.css">
 </head>
@@ -21,7 +30,7 @@
 <script src="/content/manifest.js" defer></script>
 <script src="/js/articles.js" defer></script>
 <script src="/js/article-page.js" defer></script>
-<script src="/js/forms.js" defer></script>
+<script src="/js/comments.js" defer></script>
 <script src="/js/main.js" defer></script>
 <script src="/js/firebase-init.js" defer></script>
 </body>
