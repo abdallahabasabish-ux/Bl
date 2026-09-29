@@ -1,4 +1,8 @@
-/* عرض القوائم من المانيفست + تحقق صارم — فشل ظاهر في الكونسول لا صامت */
+/* ============================================================
+   العرض العام: بطاقات المقالات، الأقسام، الخدمات، الفوتر، السنة
+   ترتيب التحميل المطلوب: config.js ← data/articles.js ← main.js
+   (صفحات المقالات تضيف بعده article.js الذي يعتمد على cfg.render)
+   ============================================================ */
 (function () {
   'use strict';
   var cfg = window.AA_BLOG;
@@ -20,13 +24,13 @@
     } catch (e) { return iso; }
   }
 
-  /* تحقق المانيفست — بديل تحقق وقت البناء الذي كان Astro يوفره */
+  /* تحقق المانيفست — المقالة الناقصة تُتجاهل مع تحذير ظاهر في الكونسول */
   function validArticle(a) {
-    var ok = a
+    var ok = !!a
       && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(a.slug || '')
       && (a.lang === 'ar' || a.lang === 'en')
-      && typeof a.title === 'string' && a.title.length >= 3
-      && typeof a.description === 'string' && a.description.length >= 20
+      && typeof a.title === 'string' && a.title.length >= 3 && a.title.length <= 120
+      && typeof a.description === 'string' && a.description.length >= 20 && a.description.length <= 200
       && /^\d{4}-\d{2}-\d{2}$/.test(a.date || '');
     if (!ok) console.warn('[AA_BLOG] مقالة ببيانات ناقصة/خاطئة تم تجاهلها:', a && a.slug);
     return ok;
@@ -71,10 +75,13 @@
     var empty = box.parentNode.querySelector('[data-empty]');
     if (empty) empty.hidden = true;
     box.innerHTML = items.map(cardHTML).join('');
-    if (mode === 'featured') box.closest('section').hidden = false; // القسم يظهر فقط حين وجود مميزة
+    if (mode === 'featured') {
+      var sec = box.closest('section');
+      if (sec) sec.hidden = false; /* قسم المميزة يظهر فقط حين وجود مقالات مميزة */
+    }
   });
 
-  /* الأقسام (عرض فقط — روابطها مع M3) */
+  /* الأقسام (عرض فقط — روابطها تُفعَّل مع صفحات الأقسام M3) */
   Array.prototype.forEach.call(document.querySelectorAll('[data-render="categories"]'), function (ul) {
     ul.innerHTML = (cfg.categories || []).map(function (c) {
       return '<li class="chip">' + esc(c[lang]) + '</li>';
@@ -88,28 +95,35 @@
     }).join('');
   });
 
-  /* الفوتر — الأعمدة تُرسم فقط حين وجود الصفحات المستهدفة (features.innerPages) */
-  if (cfg.features.innerPages) {
-    Array.prototype.forEach.call(document.querySelectorAll('[data-footer]'), function (nav) {
-      var kind = nav.getAttribute('data-footer');
-      var items = [];
-      if (kind === 'links') items = [
-        { label: ui.nav.blog,      path: 'blog/' },
-        { label: ui.nav.portfolio, path: 'portfolio/' },
-        { label: ui.nav.about,     path: 'about/' },
-        { label: ui.nav.contact,   path: 'contact/' },
-      ];
-      if (kind === 'categories') items = (cfg.categories || []).map(function (c) {
-        return { label: c[lang], path: 'categories/' + c.slug + '/' };
-      });
-      if (kind === 'services') items = (cfg.services || []).map(function (s) {
-        return { label: s[lang], path: 'services/' + s.slug + '/' };
-      });
-      nav.innerHTML = '<h3>' + esc(ui.footer[kind]) + '</h3><ul>'
-        + items.map(function (it) {
-            return '<li><a href="/' + lang + '/' + it.path + '">' + esc(it.label) + '</a></li>';
-          }).join('')
-        + '</ul>';
+  /* الفوتر — كل عمود يُرسم فقط حين وجود صفحاته (features.pages) */
+  var pages = (cfg.features && cfg.features.pages) || {};
+  Array.prototype.forEach.call(document.querySelectorAll('[data-footer]'), function (nav) {
+    var kind = nav.getAttribute('data-footer');
+    var items = [];
+    if (kind === 'links') items = [
+      pages.blog      ? { label: ui.nav.blog,      path: 'blog/' }      : null,
+      pages.portfolio ? { label: ui.nav.portfolio, path: 'portfolio/' } : null,
+      pages.about     ? { label: ui.nav.about,     path: 'about/' }     : null,
+      pages.contact   ? { label: ui.nav.contact,   path: 'contact/' }   : null
+    ].filter(Boolean);
+    if (kind === 'categories' && pages.categories) items = (cfg.categories || []).map(function (c) {
+      return { label: c[lang], path: 'categories/' + c.slug + '/' };
     });
-  }
+    if (kind === 'services' && pages.services) items = (cfg.services || []).map(function (s) {
+      return { label: s[lang], path: 'services/' + s.slug + '/' };
+    });
+    if (!items.length) { nav.hidden = true; return; }
+    nav.innerHTML = '<h3>' + esc(ui.footer[kind]) + '</h3><ul>'
+      + items.map(function (it) {
+          return '<li><a href="/' + lang + '/' + it.path + '">' + esc(it.label) + '</a></li>';
+        }).join('')
+      + '</ul>';
+  });
+
+  /* سنة الفوتر الحية */
+  var y = document.querySelector('[data-year]');
+  if (y) y.textContent = new Date().getFullYear();
+
+  /* واجهة داخلية لمشاركة المساعدين مع article.js (M2) */
+  cfg.render = { esc: esc, fmtDate: fmtDate, cardHTML: cardHTML, listArticles: listArticles };
 })();
