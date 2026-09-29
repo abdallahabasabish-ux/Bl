@@ -3,7 +3,7 @@
    أسود #0a0a0b + برتقالي #FF6600 | خصائص منطقية: RTL/LTR من نفس الملف
    ============================================================ */
 
-/* الخطوط — ذاتية الاستضافة (ضع ملفات woff2 في /fonts/) */
+/* الخطوط — ذاتية الاستضافة (ملفات woff2 في /fonts/) */
 @font-face { font-family: 'IBM Plex Sans Arabic'; src: url('/fonts/IBMPlexSansArabic-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'IBM Plex Sans Arabic'; src: url('/fonts/IBMPlexSansArabic-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
 @font-face { font-family: 'IBM Plex Sans Arabic'; src: url('/fonts/IBMPlexSansArabic-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
@@ -35,7 +35,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 input, textarea, select { font: inherit; }
 ul[class] { list-style: none; padding: 0; }
 h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; overflow-wrap: break-word; }
-[lang="en"] h1, [lang="en"] h2, [lang="en"] h3, html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3 { font-family: var(--font-latin); letter-spacing: -0.02em; }
+html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3, html[lang="en"] h4 { font-family: var(--font-latin); letter-spacing: -0.02em; }
 code, pre { font-family: var(--font-mono); }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -57,7 +57,7 @@ code, pre { font-family: var(--font-mono); }
 /* ---------- تخطيط ---------- */
 .container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); }
 .section { padding-block: clamp(3.5rem, 8vw, 5.5rem); }
-.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-3, .75rem); margin-bottom: 2rem; }
+.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .75rem; margin-bottom: 2rem; }
 .section-title { font-size: clamp(1.35rem, 2.5vw, 1.7rem); }
 .section-title::before { content: ''; display: block; width: 2.25rem; height: 3px; background: var(--accent); border-radius: 2px; margin-bottom: .75rem; }
 .section-sub { color: var(--text-2); max-width: 40rem; }
@@ -162,3 +162,15 @@ html[lang="en"] .hero .kicker { text-transform: uppercase; letter-spacing: .08em
 .nf h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); margin-bottom: 1rem; }
 .nf p { color: var(--text-2); margin-bottom: .75rem; }
 .nf .cta-row { justify-content: center; margin-top: 2rem; }
+
+/* ---------- M2: صفحات القوائم + مسار التنقل ---------- */
+.page-head { padding-block: clamp(2.5rem, 6vw, 4rem) 1.5rem; }
+.page-head h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: .5rem; }
+.page-sub { color: var(--text-2); max-width: 44rem; }
+.breadcrumbs { margin-top: 1.5rem; font-size: .82rem; }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; }
+.breadcrumbs li { display: flex; align-items: center; gap: .4rem; color: var(--text-3); }
+.breadcrumbs li + li::before { content: '/'; }
+.breadcrumbs a { color: var(--text-3); text-decoration: none; }
+.breadcrumbs a:hover { color: var(--accent); }
+.breadcrumbs [aria-current="page"] { color: var(--text-2); }
