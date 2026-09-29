@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# ⚠️ حدّث عند تغيير النطاق في config.js
+Sitemap: https://blog.abdallahabas.com/sitemap.xml
