@@ -233,3 +233,19 @@ body.no-scroll{overflow:hidden}
 @media (max-width:768px){.cols-2,.cols-3{grid-template-columns:1fr}.about-grid,.contact-grid{grid-template-columns:1fr}.service-row{grid-template-columns:1fr}.service-row .service-ico{margin-bottom:0}.footer-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:600px){.footer-grid{grid-template-columns:1fr}.methods-grid{grid-template-columns:1fr}.overlay{padding:10vh 14px 14px}.art-info{gap:12px}}
 @media (min-width:1600px){:root{--header-h:72px}body{font-size:17px}.container{max-width:1140px}}
+/* ---- legal & archive pages ---- */
+.legal-body{max-width:78ch}
+.legal-body section{margin-bottom:30px}
+.legal-body h2{font-size:1.22rem;margin-bottom:10px}
+.legal-body p{color:var(--txt2);font-size:.96rem;margin-bottom:10px}
+.arch-year{margin-bottom:clamp(30px,4vw,44px)}
+.arch-year h2{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line2);padding-bottom:10px;margin-bottom:14px}
+.arch-year h2 .num{font-size:1.5rem;color:var(--accent)}
+.arch-count{font-family:var(--font-mono);font-size:.72rem;color:var(--txt3)}
+.arch-item{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.arch-item time{font-size:.78rem;color:var(--txt3);min-width:110px}
+.arch-item a.t{font-weight:600;font-size:1rem}
+.arch-item a.t:hover{color:var(--accent)}
+.arch-cat{margin-inline-start:auto;font-family:var(--font-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);border:1px solid var(--line2);border-radius:5px;padding:3px 8px}
+[dir="rtl"] .arch-cat{letter-spacing:0}
+.empty .kicker{justify-content:center}
