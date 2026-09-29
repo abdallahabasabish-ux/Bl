@@ -39,7 +39,7 @@ window.AB = { lang: "ar", T(k){ const v = k.split(".").reduce((o,x)=>o&&o[x], UI
                   : thumb(i, a.title)}
       </a>
       <div class="post-body">
-        <div class="post-meta"><span class="cat">${window.BlogMD.esc(AB.L(c.ar ? c : {ar:c.ar,en:c.en}))}</span>
+        <div class="post-meta"><span class="cat">${window.BlogMD.esc(AB.L(c))}</span>
           <time datetime="${a.date}">${dt}</time></div>
         <h3><a href="${artURL(a)}">${window.BlogMD.esc(a.title)}</a></h3>
         <p>${window.BlogMD.esc(a.description)}</p>
@@ -49,4 +49,7 @@ window.AB = { lang: "ar", T(k){ const v = k.split(".").reduce((o,x)=>o&&o[x], UI
   }
 
   window.AB.art = { byLang, find, pair, count, latest, featured, catOf, artURL, card, icon, thumb, M };
+  /* FIX: المستهلكون (pages/article-page/comments/archive/main) يستقبلون icon من
+     window.AB مباشرة عند تحميلهم — يجب أن تكون موجودة هنا وقبلهم في ترتيب السكربتات */
+  window.AB.icon = icon;
 })();
