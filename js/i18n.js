@@ -35,7 +35,9 @@ ar: {
   misc: { consent:"أوافق على استخدام بياناتي للرد على طلبي.", sent:"تم استلام طلبك بنجاح.",
           errSent:"تعذّر الإرسال — جرّب قناة تواصل مباشرة.", reqd:"الحقول المعلّمة * مطلوبة.",
           rights:"جميع الحقوق محفوظة.", response:"أرد عادة خلال يوم عمل واحد.",
-          legalTitle:"قانوني", tagline:"شروحات وتجارب من داخل العمل — SEO، وبلوجر وووردبريس، وتهيئة AdSense." }
+          legalTitle:"قانوني", tagline:"شروحات وتجارب من داخل العمل — SEO، وبلوجر وووردبريس، وتهيئة AdSense." },
+  legal: { privacy:"سياسة الخصوصية", terms:"شروط الاستخدام",
+           disclosure:"إفصاح الارتباط", disclaimer:"إخلاء المسؤولية" }
 },
 en: {
   nav: { home:"Home", articles:"Articles", categories:"Categories", services:"Services",
@@ -72,5 +74,7 @@ en: {
   misc: { consent:"I agree that my details will be used to respond to my request.", sent:"Your request was received.",
           errSent:"Sending failed — try a direct channel.", reqd:"Fields marked * are required.",
           rights:"All rights reserved.", response:"I usually reply within one business day.",
-          legalTitle:"Legal", tagline:"Guides and experiments from inside the work — SEO, Blogger & WordPress, AdSense readiness." }
+          legalTitle:"Legal", tagline:"Guides and experiments from inside the work — SEO, Blogger & WordPress, AdSense readiness." },
+  legal: { privacy:"Privacy Policy", terms:"Terms of Use",
+           disclosure:"Affiliate Disclosure", disclaimer:"Disclaimer" }
 }};
